@@ -7,7 +7,7 @@
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="sr-only">Name</label>
-                    <input type="text" name="name" id="name" placeholder="Your Name" value="{{ old('name') }}}"
+                    <input type="text" name="name" id="name" placeholder="Your Name" value="{{ old('name') }}"
                     class="bg-gray-100 border-2 w-full p-4 rounded-lg @error('name') border-red-500 @enderror">
 
                     @error('name')
