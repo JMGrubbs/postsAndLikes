@@ -32,12 +32,12 @@ class RegisterController extends Controller
             'email'=>$request->email,
             'password'=>Hash::make($request->password),
         ]);
-
+        // Outdated method below
         // auth()->attempt([
         //     'email'=>$request->email,
         //     'password'=>$request->password,
         // ]);
-
+        // indated method
         Auth::attempt($request->only('email', 'password'));
         // auth()->attempt($request->only('email', 'password'));
         

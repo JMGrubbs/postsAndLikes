@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return view('auth.login');
     }
@@ -19,12 +19,13 @@ class LoginController extends Controller
         // dd($request->only('email', 'password'));
         $this->validate($request, [
             'email'=>'required|email',
-            'pasword'=>'required',
+            'password'=>'required',
         ]);
+
         if(!Auth::attempt($request->only('email', 'password'))){
-            return back()->with('status', 'Invalis lofin details');
+            return back()->with('status', 'Invalis login details');
         }
-        
         return redirect()->route('dashboard');
+
     }
 }
