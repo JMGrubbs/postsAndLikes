@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\Posts\PostController;
@@ -36,3 +37,9 @@ Route::post('/register', [RegisterController::class, 'store']);
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts');
 Route::post('/posts', [PostController::class, 'store']);
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+Route::post('/post/{post}/likes', [PostLikeController::class, 'store']) ->name('posts.likes');
+Route::delete('/post/{post}/likes', [PostLikeController::class, 'destroy']);
+// Route::post('/post/{post}/likes', [PostLikeController::class, 'store']) ->name('posts.likes');
+

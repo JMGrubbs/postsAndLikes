@@ -3,7 +3,9 @@
 @section('content')
     <div class ="flex justify-center">
         <div class="w-8/12 bg-white p-6 rounded-lg">
-            <form action="{{ route('posts') }}" method="POST" class="mb-4">
+            @auth
+                
+            <form action="{{ route('posts') }}" method="post" class="mb-4">
                 @csrf
                 <div class="mb-4">
                     <label for="body" class="sr-only">Body</label>
@@ -20,6 +22,7 @@
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded font-medium">Post</button>
                 </div>
             </form> 
+            @endauth
             @if ($posts->count())
                 @foreach ($posts as $post)
                     <div class="mb-4">
@@ -27,25 +30,40 @@
                         class="text-gray-600 text-sm">{{ $post->created_at->diffForHumans() }}</span>
                         <p class="mb-2">
                             {{ $post->body }}
-                        </p> 
+                        </p>
+
+                        @auth
+                            @can('delete', $post)
+                                <form action="{{ route('posts.destroy', $post) }}" method="post" class="mr-1">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-blue-500">Delete</button>
+                                </form>
+                            @endcan
+                        @endauth
+
                         <div class="flex item-center">
-                            <form action="" method="post" class="mr-1">
-                                @csrf
-                                <button type="submit" class="text-blue-500">Like</button>
-                            </form>
-                            <form action="" method="post" class="mr-1">
-                                @csrf
-                                <button type="submit" class="text-blue-500">Unlike</button>
-                            </form>
+                            @auth
+                                @if (!$post->likedBy(Auth::user()))
+                                    <form action="{{ route('posts.likes', $post->id) }}" method="post" class="mr-1">
+                                        @csrf
+                                        <button type="submit" class="text-blue-500">Like</button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('posts.likes', $post->id) }}" method="post" class="mr-1">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-blue-500">Unlike</button>
+                                    </form>
+                                @endif
+                            @endauth
                             <span>{{ $post->likes->count() }} {{ Str::plural('like', $post->likes->count()) }}</span>
                         </div>
                     </div>
                 @endforeach
-                {{ $posts->links() }}
             @else
                 <p class="font-bold">There are no posts</p>
-            @endif         
+            @endif  
         </div>
-
     </div>
 @endsection

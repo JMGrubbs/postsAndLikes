@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Posts;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     public function index(){
         // $posts = Post::get(); // returns all posts as a collection
-        $posts = Post::paginate(20);
+        // $posts = Post::orderBy('created_at', 'desc')->with(['user', 'likes'])->paginate(20);
+        $posts = Post::latest()->with(['user', 'likes'])->paginate(20);
          
         return view('posts.index',[
             'posts' => $posts
@@ -22,8 +24,6 @@ class PostController extends Controller
         $this->validate($request, [
             'body' => 'required'
         ]);
-
-
         
         //     Post::create([
         //         'user_id' => Auth::user()->id,
@@ -39,5 +39,13 @@ class PostController extends Controller
         // ]);
 
         return redirect()->route('posts');
+    }
+    public function destroy(Post $post)
+    {
+        $this->authorize('delete', $post);
+
+        $post->delete();
+
+        return back();
     }
 }
