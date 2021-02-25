@@ -36,9 +36,20 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast to native types.
      *
-     * @var array
+     * @var array 
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function posts(){
+        // Can specify what collums the post object has by setting them here like so:
+        // return $this->hasMany(Post::class, 'id', 'user_id');
+        // but laravel does this automaticaly momst the time.
+        return $this->hasMany(Post::class);
+    }
+
+    public function likes(){
+        return $this->hasMany(Like::class);
+    }
 }

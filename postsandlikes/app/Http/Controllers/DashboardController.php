@@ -12,8 +12,12 @@ class DashboardController extends Controller
         $this->middleware(['auth']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        // dd(Auth::user()->posts);
+        // if you wanna see an object and its relationships call table/fiels as a function
+        // dd(Auth::user()->posts;
+        // dd(Auth::user()->posts());
         return view('dashboard');
     }
 }
